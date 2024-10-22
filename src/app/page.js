@@ -264,38 +264,68 @@ export default function Home() {
                 </section>
 
                 <section className="py-24 px-4 bg-gradient-to-r from-blue-100 to-indigo-100">
-                    <div className="container mx-auto max-w-5xl">
+                    <div className="container mx-auto max-w-4xl">
                         <h2 className="text-3xl md:text-5xl font-bold mb-4 text-center text-gray-800">Why Choose Us?</h2>
-                        <p className="text-xl md:text-2xl text-center mb-12 text-gray-600">Every vehicle comes with a comprehensive history report</p>
-                        <Card className="p-8 md:p-12 shadow-2xl">
-                            <CardContent className="flex flex-col md:flex-row items-center">
-                                <div className="md:w-1/3 mb-8 md:mb-0 md:mr-12">
-                                    <Badge className="text-6xl p-8 bg-blue-600 text-white">CFP</Badge>
-                                </div>
-                                <div className="md:w-2/3">
-                                    <CardTitle className="text-3xl font-bold mb-8 text-blue-800">The CarFinder Pro Advantage</CardTitle>
-                                    <ul className="space-y-6 text-lg text-gray-700">
-                                        <li className="flex items-center">
-                                            <Badge variant="secondary" className="mr-4 p-1">✓</Badge>
-                                            Full vehicle history report with every listing
-                                        </li>
-                                        <li className="flex items-center">
-                                            <Badge variant="secondary" className="mr-4 p-1">✓</Badge>
-                                            Quickly identify cars with no reported accidents
-                                        </li>
-                                        <li className="flex items-center">
-                                            <Badge variant="secondary" className="mr-4 p-1">✓</Badge>
-                                            Review detailed service records
-                                        </li>
-                                        <li className="flex items-center">
-                                            <Badge variant="secondary" className="mr-4 p-1">✓</Badge>
-                                            Find cars with a single owner
-                                        </li>
-                                    </ul>
-                                    <Button className="mt-10 bg-yellow-400 hover:bg-yellow-500 text-blue-800 text-lg py-6 px-8">Learn More About CarFinder Pro Reports</Button>
-                                </div>
-                            </CardContent>
-                        </Card>
+                        <p className="text-xl md:text-2xl text-center mb-12 text-gray-600">Experience the CarFinder advantage</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <Card className="bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300">
+                                <CardHeader>
+                                    <CardTitle className="flex items-center text-2xl text-blue-800">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 mr-3 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        Comprehensive Reports
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <p className="text-gray-600">Get a full vehicle history report with every listing, including accident history and service records.</p>
+                                </CardContent>
+                            </Card>
+                            <Card className="bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300">
+                                <CardHeader>
+                                    <CardTitle className="flex items-center text-2xl text-blue-800">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 mr-3 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        Time-Saving Search
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <p className="text-gray-600">Our advanced filters help you quickly find cars that match your exact criteria, saving you time and effort.</p>
+                                </CardContent>
+                            </Card>
+                            <Card className="bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300">
+                                <CardHeader>
+                                    <CardTitle className="flex items-center text-2xl text-blue-800">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 mr-3 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                        </svg>
+                                        Verified Listings
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <p className="text-gray-600">All our listings are verified for accuracy, including mileage and vehicle condition, ensuring you get what you expect.</p>
+                                </CardContent>
+                            </Card>
+                            <Card className="bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300">
+                                <CardHeader>
+                                    <CardTitle className="flex items-center text-2xl text-blue-800">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 mr-3 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+                                        </svg>
+                                        Expert Support
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <p className="text-gray-600">Our team of car experts is always ready to assist you with any questions or concerns throughout your car-buying journey.</p>
+                                </CardContent>
+                            </Card>
+                        </div>
+                        <div className="mt-12 text-center">
+                            <Button className="bg-blue-600 hover:bg-blue-700 text-white text-lg py-4 px-8 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
+                                Start Your Car Search
+                            </Button>
+                        </div>
                     </div>
                 </section>
             </main>
