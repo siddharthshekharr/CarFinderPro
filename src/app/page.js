@@ -20,19 +20,19 @@ export default function Home() {
         <div className="flex flex-col min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
             <Header />
             <main className="flex-grow">
-                <section className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-32 px-4">
+                <section className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-16 md:py-32 px-4">
                     <div className="container mx-auto max-w-6xl">
-                        <h1 className="text-4xl md:text-6xl font-bold mb-6 text-center leading-tight">Find Your Dream Car</h1>
-                        <p className="text-xl md:text-2xl mb-12 text-center text-blue-100">Discover millions of cars to find the perfect match for you</p>
+                        <h1 className="text-3xl md:text-6xl font-bold mb-4 md:mb-6 text-center leading-tight">Find Your Dream Car</h1>
+                        <p className="text-lg md:text-2xl mb-8 md:mb-12 text-center text-blue-100">Discover millions of cars to find the perfect match for you</p>
                         <Card className="bg-white/95 backdrop-blur-md shadow-2xl">
-                            <CardContent className="p-6 md:p-8">
+                            <CardContent className="p-4 md:p-8">
                                 <Tabs defaultValue="search" className="w-full">
-                                    <TabsList className="grid w-full grid-cols-2 mb-8">
-                                        <TabsTrigger value="search" className="text-lg">Advanced Search</TabsTrigger>
-                                        <TabsTrigger value="budget" className="text-lg">Search by Budget</TabsTrigger>
+                                    <TabsList className="grid w-full grid-cols-2 mb-6 md:mb-8">
+                                        <TabsTrigger value="search" className="text-base md:text-lg">Advanced Search</TabsTrigger>
+                                        <TabsTrigger value="budget" className="text-base md:text-lg">Search by Budget</TabsTrigger>
                                     </TabsList>
                                     <TabsContent value="search">
-                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                                             <Select>
                                                 <SelectTrigger className="bg-gray-50">
                                                     <SelectValue placeholder="Make" />
@@ -74,8 +74,8 @@ export default function Home() {
                                                     <SelectItem value="van">Van</SelectItem>
                                                 </SelectContent>
                                             </Select>
-                                            <div className="flex gap-4">
-                                                <Select className="w-1/2">
+                                            <div className="grid grid-cols-2 gap-2 sm:gap-4">
+                                                <Select>
                                                     <SelectTrigger className="bg-gray-50">
                                                         <SelectValue placeholder="Min Year" />
                                                     </SelectTrigger>
@@ -87,7 +87,7 @@ export default function Home() {
                                                         ))}
                                                     </SelectContent>
                                                 </Select>
-                                                <Select className="w-1/2">
+                                                <Select>
                                                     <SelectTrigger className="bg-gray-50">
                                                         <SelectValue placeholder="Max Year" />
                                                     </SelectTrigger>
@@ -122,7 +122,7 @@ export default function Home() {
                                                     <SelectItem value="plugin_hybrid">Plug-in Hybrid</SelectItem>
                                                 </SelectContent>
                                             </Select>
-                                            <div className="col-span-3">
+                                            <div className="col-span-full">
                                                 <label className="block text-sm font-medium mb-2 text-gray-700">
                                                     Mileage (up to {mileage.toLocaleString()} miles)
                                                 </label>
@@ -134,7 +134,7 @@ export default function Home() {
                                                     className="mb-6"
                                                 />
                                             </div>
-                                            <div className="col-span-3">
+                                            <div className="col-span-full">
                                                 <label className="block text-sm font-medium mb-2 text-gray-700">
                                                     Price (up to ${price.toLocaleString()})
                                                 </label>
@@ -173,7 +173,7 @@ export default function Home() {
                                             </Select>
                                             <Input type="text" placeholder="ZIP Code" className="bg-gray-50" />
                                         </div>
-                                        <Button className="w-full mt-6 bg-yellow-400 hover:bg-yellow-500 text-blue-800 text-lg py-6">Search Cars</Button>
+                                        <Button className="w-full mt-6 bg-yellow-400 hover:bg-yellow-500 text-blue-800 text-base md:text-lg py-4 md:py-6">Search Cars</Button>
                                     </TabsContent>
                                     <TabsContent value="budget">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
