@@ -10,14 +10,113 @@ import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Toaster, toast } from 'react-hot-toast';
+import { Download } from 'lucide-react'; // Import the Download icon
 
 export default function Home() {
-    const [mileage, setMileage] = useState([100000]);
-    const [price, setPrice] = useState([50000]);
+    const [mileage, setMileage] = useState(100000);
+    const [price, setPrice] = useState(50000);
+    const [uiOptions, setUiOptions] = useState(null);
+    const [selectedMake, setSelectedMake] = useState('');
+    const [models, setModels] = useState([]);
+    const [formData, setFormData] = useState({
+        make: '',
+        model: '',
+        bodyType: '',
+        minYear: '',
+        maxYear: '',
+        transmission: '',
+        fuelType: '',
+        mileage: 100000,
+        price: 50000,
+        driveType: '',
+        seatingCapacity: '',
+        zipCode: ''
+    });
+
+    useEffect(() => {
+        fetch('/car_database.json')
+            .then(response => response.json())
+            .then(data => {
+                setUiOptions(data.ui_options);
+            })
+            .catch(error => console.error('Error loading car database:', error));
+    }, []);
+
+    useEffect(() => {
+        if (selectedMake && uiOptions) {
+            setModels(uiOptions.models_by_make[selectedMake] || []);
+        }
+    }, [selectedMake, uiOptions]);
+
+    const handleInputChange = (name, value) => {
+        setFormData(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+        if (name === 'make') {
+            setSelectedMake(value);
+        }
+    };
+
+    const handleSubmit = async () => {
+        try {
+            const response = await fetch('/api/saveSearch', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to save search data');
+            }
+
+            const result = await response.json();
+            console.log(result.message);
+            toast.success('Search data saved successfully!', {
+                duration: 3000,
+                position: 'top-center',
+            });
+        } catch (error) {
+            console.error('Error:', error);
+            toast.error('Failed to save search data. Please try again.', {
+                duration: 3000,
+                position: 'top-center',
+            });
+        }
+    };
+
+    const handleDownload = async () => {
+        try {
+            const response = await fetch('/api/downloadSearches');
+            if (!response.ok) throw new Error('Download failed');
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = 'searches.csv';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            toast.success('CSV file downloaded successfully!');
+        } catch (error) {
+            console.error('Error downloading CSV:', error);
+            toast.error('Failed to download CSV file. Please try again.');
+        }
+    };
+
+    if (!uiOptions) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div className="flex flex-col min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+            <Toaster />
             <Header />
             <main className="flex-grow">
                 <section className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-16 md:py-32 px-4">
@@ -33,93 +132,76 @@ export default function Home() {
                                     </TabsList>
                                     <TabsContent value="search">
                                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                                            <Select>
+                                            <Select onValueChange={(value) => handleInputChange('make', value)}>
                                                 <SelectTrigger className="bg-gray-50">
                                                     <SelectValue placeholder="Make" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="honda">Honda</SelectItem>
-                                                    <SelectItem value="toyota">Toyota</SelectItem>
-                                                    <SelectItem value="ford">Ford</SelectItem>
-                                                    <SelectItem value="chevrolet">Chevrolet</SelectItem>
-                                                    <SelectItem value="bmw">BMW</SelectItem>
-                                                    <SelectItem value="mercedes">Mercedes-Benz</SelectItem>
+                                                    {uiOptions.makes.map(make => (
+                                                        <SelectItem key={make} value={make}>{make}</SelectItem>
+                                                    ))}
                                                 </SelectContent>
                                             </Select>
-                                            <Select>
+                                            <Select onValueChange={(value) => handleInputChange('model', value)}>
                                                 <SelectTrigger className="bg-gray-50">
                                                     <SelectValue placeholder="Model" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="civic">Civic</SelectItem>
-                                                    <SelectItem value="camry">Camry</SelectItem>
-                                                    <SelectItem value="f150">F-150</SelectItem>
-                                                    <SelectItem value="silverado">Silverado</SelectItem>
-                                                    <SelectItem value="3series">3 Series</SelectItem>
-                                                    <SelectItem value="cclass">C-Class</SelectItem>
+                                                    {models.map(model => (
+                                                        <SelectItem key={model} value={model}>{model}</SelectItem>
+                                                    ))}
                                                 </SelectContent>
                                             </Select>
-                                            <Select>
+                                            <Select onValueChange={(value) => handleInputChange('bodyType', value)}>
                                                 <SelectTrigger className="bg-gray-50">
                                                     <SelectValue placeholder="Body Type" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="sedan">Sedan</SelectItem>
-                                                    <SelectItem value="suv">SUV</SelectItem>
-                                                    <SelectItem value="truck">Truck</SelectItem>
-                                                    <SelectItem value="coupe">Coupe</SelectItem>
-                                                    <SelectItem value="hatchback">Hatchback</SelectItem>
-                                                    <SelectItem value="convertible">Convertible</SelectItem>
-                                                    <SelectItem value="wagon">Wagon</SelectItem>
-                                                    <SelectItem value="van">Van</SelectItem>
+                                                    {uiOptions.body_types.map(type => (
+                                                        <SelectItem key={type} value={type}>{type}</SelectItem>
+                                                    ))}
                                                 </SelectContent>
                                             </Select>
                                             <div className="grid grid-cols-2 gap-2 sm:gap-4">
-                                                <Select>
+                                                <Select onValueChange={(value) => handleInputChange('minYear', value)}>
                                                     <SelectTrigger className="bg-gray-50">
                                                         <SelectValue placeholder="Min Year" />
                                                     </SelectTrigger>
                                                     <SelectContent>
-                                                        {[...Array(30)].map((_, i) => (
-                                                            <SelectItem key={i} value={`${2023 - i}`}>
-                                                                {2023 - i}
-                                                            </SelectItem>
+                                                        {uiOptions.years.map(year => (
+                                                            <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
                                                         ))}
                                                     </SelectContent>
                                                 </Select>
-                                                <Select>
+                                                <Select onValueChange={(value) => handleInputChange('maxYear', value)}>
                                                     <SelectTrigger className="bg-gray-50">
                                                         <SelectValue placeholder="Max Year" />
                                                     </SelectTrigger>
                                                     <SelectContent>
-                                                        {[...Array(30)].map((_, i) => (
-                                                            <SelectItem key={i} value={`${2023 - i}`}>
-                                                                {2023 - i}
-                                                            </SelectItem>
+                                                        {uiOptions.years.map(year => (
+                                                            <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
                                                         ))}
                                                     </SelectContent>
                                                 </Select>
                                             </div>
-                                            <Select>
+                                            <Select onValueChange={(value) => handleInputChange('transmission', value)}>
                                                 <SelectTrigger className="bg-gray-50">
                                                     <SelectValue placeholder="Transmission" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="automatic">Automatic</SelectItem>
-                                                    <SelectItem value="manual">Manual</SelectItem>
-                                                    <SelectItem value="cvt">CVT</SelectItem>
+                                                    {uiOptions.transmission_types.map(type => (
+                                                        <SelectItem key={type} value={type}>{type}</SelectItem>
+                                                    ))}
                                                 </SelectContent>
                                             </Select>
-                                            <Select>
+                                            <Select onValueChange={(value) => handleInputChange('fuelType', value)}>
                                                 <SelectTrigger className="bg-gray-50">
                                                     <SelectValue placeholder="Fuel Type" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="gasoline">Gasoline</SelectItem>
-                                                    <SelectItem value="diesel">Diesel</SelectItem>
-                                                    <SelectItem value="electric">Electric</SelectItem>
-                                                    <SelectItem value="hybrid">Hybrid</SelectItem>
-                                                    <SelectItem value="plugin_hybrid">Plug-in Hybrid</SelectItem>
+                                                    {uiOptions.fuel_types.map(type => (
+                                                        <SelectItem key={type} value={type}>{type}</SelectItem>
+                                                    ))}
                                                 </SelectContent>
                                             </Select>
                                             <div className="col-span-full">
@@ -130,7 +212,10 @@ export default function Home() {
                                                     defaultValue={[100000]}
                                                     max={300000}
                                                     step={5000}
-                                                    onValueChange={(value) => setMileage(value[0])}
+                                                    onValueChange={(value) => {
+                                                        setMileage(value[0]);
+                                                        handleInputChange('mileage', value[0]);
+                                                    }}
                                                     className="mb-6"
                                                 />
                                             </div>
@@ -142,38 +227,46 @@ export default function Home() {
                                                     defaultValue={[50000]}
                                                     max={200000}
                                                     step={1000}
-                                                    onValueChange={(value) => setPrice(value[0])}
+                                                    onValueChange={(value) => {
+                                                        setPrice(value[0]);
+                                                        handleInputChange('price', value[0]);
+                                                    }}
                                                     className="mb-6"
                                                 />
                                             </div>
-                                            <Select>
+                                            <Select onValueChange={(value) => handleInputChange('driveType', value)}>
                                                 <SelectTrigger className="bg-gray-50">
-                                                    <SelectValue placeholder="Exterior Color" />
+                                                    <SelectValue placeholder="Drive Type" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="black">Black</SelectItem>
-                                                    <SelectItem value="white">White</SelectItem>
-                                                    <SelectItem value="silver">Silver</SelectItem>
-                                                    <SelectItem value="red">Red</SelectItem>
-                                                    <SelectItem value="blue">Blue</SelectItem>
-                                                    <SelectItem value="gray">Gray</SelectItem>
+                                                    {uiOptions.drive_types.map(type => (
+                                                        <SelectItem key={type} value={type}>{type}</SelectItem>
+                                                    ))}
                                                 </SelectContent>
                                             </Select>
-                                            <Select>
+                                            <Select onValueChange={(value) => handleInputChange('seatingCapacity', value)}>
                                                 <SelectTrigger className="bg-gray-50">
-                                                    <SelectValue placeholder="Interior Color" />
+                                                    <SelectValue placeholder="Seating Capacity" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="black">Black</SelectItem>
-                                                    <SelectItem value="gray">Gray</SelectItem>
-                                                    <SelectItem value="beige">Beige</SelectItem>
-                                                    <SelectItem value="brown">Brown</SelectItem>
-                                                    <SelectItem value="tan">Tan</SelectItem>
+                                                    {uiOptions.seating_capacity.map(capacity => (
+                                                        <SelectItem key={capacity} value={capacity.toString()}>{capacity}</SelectItem>
+                                                    ))}
                                                 </SelectContent>
                                             </Select>
-                                            <Input type="text" placeholder="ZIP Code" className="bg-gray-50" />
+                                            <Input
+                                                type="text"
+                                                placeholder="ZIP Code"
+                                                className="bg-gray-50"
+                                                onChange={(e) => handleInputChange('zipCode', e.target.value)}
+                                            />
                                         </div>
-                                        <Button className="w-full mt-6 bg-yellow-400 hover:bg-yellow-500 text-blue-800 text-base md:text-lg py-4 md:py-6">Search Cars</Button>
+                                        <Button
+                                            className="w-full mt-6 bg-yellow-400 hover:bg-yellow-500 text-blue-800 text-base md:text-lg py-4 md:py-6"
+                                            onClick={handleSubmit}
+                                        >
+                                            Search Cars
+                                        </Button>
                                     </TabsContent>
                                     <TabsContent value="budget">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -328,6 +421,16 @@ export default function Home() {
                         </div>
                     </div>
                 </section>
+
+                {/* Add this button after the search section */}
+                <div className="container mx-auto max-w-6xl mt-8 text-center">
+                    <Button
+                        onClick={handleDownload}
+                        className="bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                        <Download className="mr-2 h-4 w-4" /> Download Search Data
+                    </Button>
+                </div>
             </main>
             <Footer />
         </div>
