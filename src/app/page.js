@@ -21,14 +21,40 @@ const commonFeatures = {
         "Front Collision Warning",
         "Lane Departure Warning",
         "Blind Spot Detection",
-        "Backup Camera"
+        "Backup Camera",
+        "Airbags",
+        "Traction Control",
+        "Stability Control",
+        "Parking Sensors",
+        "Night Vision"
     ],
     comfort: [
         "Adaptive Cruise Control",
         "Day Running Lights",
         "Keyless Entry",
         "Power Windows",
-        "Climate Control"
+        "Climate Control",
+        "Heated Seats",
+        "Ventilated Seats",
+        "Sunroof",
+        "Power Seats",
+        "Navigation System"
+    ],
+    performance: [
+        "Turbo Charged",
+        "Sport Mode",
+        "Paddle Shifters",
+        "Launch Control",
+        "Performance Tires"
+    ],
+    technology: [
+        "Bluetooth",
+        "Apple CarPlay",
+        "Android Auto",
+        "Wireless Charging",
+        "Premium Sound System",
+        "Head-Up Display",
+        "Digital Dashboard"
     ]
 };
 
@@ -50,11 +76,20 @@ export default function Home() {
         price: 50000,
         driveType: '',
         seatingCapacity: '',
+        engineSize: '',
+        horsepower: '',
+        mpgCity: '',
+        mpgHighway: '',
+        color: '',
+        interiorColor: '',
+        warranty: '',
         zipCode: ''
     });
     const [selectedFeatures, setSelectedFeatures] = useState({
         safety: [],
-        comfort: []
+        comfort: [],
+        performance: [],
+        technology: []
     });
 
     useEffect(() => {
@@ -86,7 +121,9 @@ export default function Home() {
         const dataToSubmit = {
             ...formData,
             safetyFeatures: selectedFeatures.safety.join('|'),
-            comfortFeatures: selectedFeatures.comfort.join('|')
+            comfortFeatures: selectedFeatures.comfort.join('|'),
+            performanceFeatures: selectedFeatures.performance.join('|'),
+            technologyFeatures: selectedFeatures.technology.join('|')
         };
 
         try {
@@ -327,6 +364,56 @@ export default function Home() {
                                                                         comfort: checked
                                                                             ? [...prev.comfort, feature]
                                                                             : prev.comfort.filter(f => f !== feature)
+                                                                    }));
+                                                                }}
+                                                            />
+                                                            <label htmlFor={feature} className="text-sm text-gray-600">
+                                                                {feature}
+                                                            </label>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            <div className="col-span-full mt-6">
+                                                <h3 className="text-lg font-semibold mb-4 text-gray-700">Performance Features</h3>
+                                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                                    {commonFeatures.performance.map(feature => (
+                                                        <div key={feature} className="flex items-center space-x-2">
+                                                            <Checkbox
+                                                                id={feature}
+                                                                checked={selectedFeatures.performance.includes(feature)}
+                                                                onCheckedChange={(checked) => {
+                                                                    setSelectedFeatures(prev => ({
+                                                                        ...prev,
+                                                                        performance: checked
+                                                                            ? [...prev.performance, feature]
+                                                                            : prev.performance.filter(f => f !== feature)
+                                                                    }));
+                                                                }}
+                                                            />
+                                                            <label htmlFor={feature} className="text-sm text-gray-600">
+                                                                {feature}
+                                                            </label>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            <div className="col-span-full mt-6">
+                                                <h3 className="text-lg font-semibold mb-4 text-gray-700">Technology Features</h3>
+                                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                                    {commonFeatures.technology.map(feature => (
+                                                        <div key={feature} className="flex items-center space-x-2">
+                                                            <Checkbox
+                                                                id={feature}
+                                                                checked={selectedFeatures.technology.includes(feature)}
+                                                                onCheckedChange={(checked) => {
+                                                                    setSelectedFeatures(prev => ({
+                                                                        ...prev,
+                                                                        technology: checked
+                                                                            ? [...prev.technology, feature]
+                                                                            : prev.technology.filter(f => f !== feature)
                                                                     }));
                                                                 }}
                                                             />
