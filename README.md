@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# CarFinder Pro
 
-## Getting Started
+CarFinder Pro is a web application that allows users to search for cars based on various criteria and save their search data. It provides an intuitive interface for car enthusiasts to find their dream vehicles.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Advanced Car Search:
+   - Filter by make, model, body type, year range, transmission, fuel type, mileage, price, drive type, and seating capacity.
+   - Dynamic model selection based on chosen make.
+   - Slider inputs for mileage and price ranges.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Budget-based Search:
+   - Quick search option based on budget range.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+3. Search Data Storage:
+   - Saves user search data to a CSV file.
+   - Provides feedback on successful data storage.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+4. CSV Download:
+   - Allows users to download the compiled search data as a CSV file.
 
-## Learn More
+5. Responsive Design:
+   - Optimized for both desktop and mobile devices.
 
-To learn more about Next.js, take a look at the following resources:
+## Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Next.js 14
+- React
+- Tailwind CSS
+- ShadCN UI Components
+- React Hot Toast for notifications
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Setup Instructions
 
-## Deploy on Vercel
+1. Clone the repository:
+   ```
+   git clone https://github.com/your-username/carfinder-pro.git
+   cd carfinder-pro
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. Install dependencies:
+   ```
+   npm install
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+3. Create a `.env.local` file in the root directory and add any necessary environment variables.
+
+4. Place your `car_database.json` file in the `public` folder. This file should contain the car makes, models, and other filter options.
+
+5. Run the development server:
+   ```
+   npm run dev
+   ```
+
+6. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+
+## Project Structure
+
+- `src/app/page.js`: Main component with the search interface.
+- `src/app/api/saveSearch/route.js`: API route for saving search data to CSV.
+- `src/app/api/downloadSearches/route.js`: API route for downloading the CSV file.
+- `public/car_database.json`: JSON file containing car data and filter options.
+- `public/searches.csv`: CSV file where search data is stored.
+
+## Deployment
+
+This project is set up to be easily deployed on Vercel. Connect your GitHub repository to Vercel for automatic deployments.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License.

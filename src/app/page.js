@@ -13,6 +13,50 @@ import Footer from '@/components/layout/Footer';
 import { useState, useEffect } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import { Download } from 'lucide-react'; // Import the Download icon
+import { Checkbox } from "@/components/ui/checkbox";
+
+const commonFeatures = {
+    safety: [
+        "ABS",
+        "Front Collision Warning",
+        "Lane Departure Warning",
+        "Blind Spot Detection",
+        "Backup Camera",
+        "Airbags",
+        "Traction Control",
+        "Stability Control",
+        "Parking Sensors",
+        "Night Vision"
+    ],
+    comfort: [
+        "Adaptive Cruise Control",
+        "Day Running Lights",
+        "Keyless Entry",
+        "Power Windows",
+        "Climate Control",
+        "Heated Seats",
+        "Ventilated Seats",
+        "Sunroof",
+        "Power Seats",
+        "Navigation System"
+    ],
+    performance: [
+        "Turbo Charged",
+        "Sport Mode",
+        "Paddle Shifters",
+        "Launch Control",
+        "Performance Tires"
+    ],
+    technology: [
+        "Bluetooth",
+        "Apple CarPlay",
+        "Android Auto",
+        "Wireless Charging",
+        "Premium Sound System",
+        "Head-Up Display",
+        "Digital Dashboard"
+    ]
+};
 
 export default function Home() {
     const [mileage, setMileage] = useState(100000);
@@ -32,7 +76,20 @@ export default function Home() {
         price: 50000,
         driveType: '',
         seatingCapacity: '',
+        engineSize: '',
+        horsepower: '',
+        mpgCity: '',
+        mpgHighway: '',
+        color: '',
+        interiorColor: '',
+        warranty: '',
         zipCode: ''
+    });
+    const [selectedFeatures, setSelectedFeatures] = useState({
+        safety: [],
+        comfort: [],
+        performance: [],
+        technology: []
     });
 
     useEffect(() => {
@@ -61,13 +118,21 @@ export default function Home() {
     };
 
     const handleSubmit = async () => {
+        const dataToSubmit = {
+            ...formData,
+            safetyFeatures: selectedFeatures.safety.join('|'),
+            comfortFeatures: selectedFeatures.comfort.join('|'),
+            performanceFeatures: selectedFeatures.performance.join('|'),
+            technologyFeatures: selectedFeatures.technology.join('|')
+        };
+
         try {
             const response = await fetch('/api/saveSearch', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(dataToSubmit),
             });
 
             if (!response.ok) {
@@ -260,6 +325,105 @@ export default function Home() {
                                                 className="bg-gray-50"
                                                 onChange={(e) => handleInputChange('zipCode', e.target.value)}
                                             />
+                                            <div className="col-span-full mt-6">
+                                                <h3 className="text-lg font-semibold mb-4 text-gray-700">Safety Features</h3>
+                                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                                    {commonFeatures.safety.map(feature => (
+                                                        <div key={feature} className="flex items-center space-x-2">
+                                                            <Checkbox
+                                                                id={feature}
+                                                                checked={selectedFeatures.safety.includes(feature)}
+                                                                onCheckedChange={(checked) => {
+                                                                    setSelectedFeatures(prev => ({
+                                                                        ...prev,
+                                                                        safety: checked
+                                                                            ? [...prev.safety, feature]
+                                                                            : prev.safety.filter(f => f !== feature)
+                                                                    }));
+                                                                }}
+                                                            />
+                                                            <label htmlFor={feature} className="text-sm text-gray-600">
+                                                                {feature}
+                                                            </label>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            <div className="col-span-full mt-6">
+                                                <h3 className="text-lg font-semibold mb-4 text-gray-700">Comfort Features</h3>
+                                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                                    {commonFeatures.comfort.map(feature => (
+                                                        <div key={feature} className="flex items-center space-x-2">
+                                                            <Checkbox
+                                                                id={feature}
+                                                                checked={selectedFeatures.comfort.includes(feature)}
+                                                                onCheckedChange={(checked) => {
+                                                                    setSelectedFeatures(prev => ({
+                                                                        ...prev,
+                                                                        comfort: checked
+                                                                            ? [...prev.comfort, feature]
+                                                                            : prev.comfort.filter(f => f !== feature)
+                                                                    }));
+                                                                }}
+                                                            />
+                                                            <label htmlFor={feature} className="text-sm text-gray-600">
+                                                                {feature}
+                                                            </label>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            <div className="col-span-full mt-6">
+                                                <h3 className="text-lg font-semibold mb-4 text-gray-700">Performance Features</h3>
+                                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                                    {commonFeatures.performance.map(feature => (
+                                                        <div key={feature} className="flex items-center space-x-2">
+                                                            <Checkbox
+                                                                id={feature}
+                                                                checked={selectedFeatures.performance.includes(feature)}
+                                                                onCheckedChange={(checked) => {
+                                                                    setSelectedFeatures(prev => ({
+                                                                        ...prev,
+                                                                        performance: checked
+                                                                            ? [...prev.performance, feature]
+                                                                            : prev.performance.filter(f => f !== feature)
+                                                                    }));
+                                                                }}
+                                                            />
+                                                            <label htmlFor={feature} className="text-sm text-gray-600">
+                                                                {feature}
+                                                            </label>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            <div className="col-span-full mt-6">
+                                                <h3 className="text-lg font-semibold mb-4 text-gray-700">Technology Features</h3>
+                                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                                    {commonFeatures.technology.map(feature => (
+                                                        <div key={feature} className="flex items-center space-x-2">
+                                                            <Checkbox
+                                                                id={feature}
+                                                                checked={selectedFeatures.technology.includes(feature)}
+                                                                onCheckedChange={(checked) => {
+                                                                    setSelectedFeatures(prev => ({
+                                                                        ...prev,
+                                                                        technology: checked
+                                                                            ? [...prev.technology, feature]
+                                                                            : prev.technology.filter(f => f !== feature)
+                                                                    }));
+                                                                }}
+                                                            />
+                                                            <label htmlFor={feature} className="text-sm text-gray-600">
+                                                                {feature}
+                                                            </label>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
                                         </div>
                                         <Button
                                             className="w-full mt-6 bg-yellow-400 hover:bg-yellow-500 text-blue-800 text-base md:text-lg py-4 md:py-6"
