@@ -1,2 +1,2 @@
-make,model,bodyType,minYear,maxYear,transmission,fuelType,mileage,price,driveType,seatingCapacity,zipCode
-ACURA,ILX,Cargo Van,2011,2015,1-speed direct drive,diesel fuel,30000,5000,all wheel drive,4,qwerty
+make,model,bodyType,minYear,maxYear,transmission,fuelType,mileage,price,driveType,seatingCapacity,zipCode,safetyFeatures,comfortFeatures
+ACURA,ILX,Cargo Van,2011,2024,1-speed direct drive,diesel fuel,100000,50000,all wheel drive,2,123456,ABS|Blind Spot Detection|Backup Camera,Adaptive Cruise Control|Climate Control
